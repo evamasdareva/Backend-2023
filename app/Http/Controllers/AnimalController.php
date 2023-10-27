@@ -44,6 +44,7 @@ class AnimalController extends Controller
     // method untuk menghapus data hewan
     public function destroy($id){
         echo "Menghapus data hewan id $id <br>";
+        echo "Menghapus data hewan id <br>";
 
         unset($this->animals[$id]);
 
