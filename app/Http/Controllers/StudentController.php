@@ -9,7 +9,17 @@ class StudentController extends Controller
 {
     public function index()
     {
+        //mendapatkan semua data student
         $student = Student::all();
+
+        //jika data kosong maka kirim status code 204
+        if($student->isEmpty()){
+            $data = [
+                "message" => "Resource is empty"
+            ];
+
+            return response()->json($data, 204);
+        }
 
         $data = [
             "message" => "Get all student",
@@ -20,9 +30,38 @@ class StudentController extends Controller
         return response()->json($data, 200);
     }
 
+    public function show($id){
+        $student = Student::find($id);
+
+        // jika data yang dicari tidak ada, kirim kode 404
+        if(!$student){
+            $data = [
+                "message" => "Data not found"
+            ];
+
+            return response()->json($data, 404);
+        }
+
+        $data = [
+            "message" => "Show detail resource",
+            "data" => $student
+        ];
+
+        //mengembalikan data dan status code 200
+        return response()->json($data, 200);
+    }
+
     //membuat method store
     public function store(Request $request)
     {
+        //validasi data request
+        $request->validate([
+            "nama" => "required",
+            "nim" => "required",
+            "email" => "required|email",
+            "jurusan" => "required"
+        ]);
+
         //menangkap data request
         $input = [
             'nama' => $request->nama,
@@ -48,20 +87,22 @@ class StudentController extends Controller
         //menangkap id dari parameter
         $student = Student::find($id);
 
-        //mengecek apakah ada student dengan id tersebut
-        if (!$student) {
+        // jika data yang dicari tidak ada, kirim kode 404
+        if(!$student){
             $data = [
-                'message' => 'Data tidak ditemukan',
+                "message" => "Data not found"
             ];
+
             return response()->json($data, 404);
         }
 
-        //menangkap data request
-        $student->nama = $request->input('nama');
-        $student->nim = $request->input('nim');
-        $student->email = $request->input('email');
-        $student->jurusan = $request->input('jurusan');
-        $student->save();
+        $student->update([
+            'nama' => $request->nama ?? $student->nama,
+            'nim' => $request->nim ?? $student->nim,
+            'email' => $request->email ?? $student->email,
+            'jurusan' => $request->jurusan ?? $student->jurusan
+        ]);
+
 
         //menyimpan data yang telah diubah
         $student->save();
@@ -77,6 +118,15 @@ class StudentController extends Controller
     {
         // Mencari data siswa berdasarkan ID
         $student = Student::find($id);
+
+        // jika data yang dicari tidak ada, kirim kode 404
+        if(!$student){
+            $data = [
+                "message" => "Data not found"
+            ];
+
+            return response()->json($data, 404);
+        }
 
         // Mengecek apakah data tersebut ada atau tidak
         if (!$student) {
