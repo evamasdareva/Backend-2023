@@ -54,24 +54,16 @@ class StudentController extends Controller
     //membuat method store
     public function store(Request $request)
     {
-        //validasi data request
-        $request->validate([
-            "nama" => "required",
-            "nim" => "required",
-            "email" => "required|email",
-            "jurusan" => "required"
+        // Membuat validasi
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'nim' => 'numeric|required',
+            'email' => 'email|required',
+            'jurusan' => 'required'
         ]);
 
-        //menangkap data request
-        $input = [
-            'nama' => $request->nama,
-            'nim' => $request->nim,
-            'email' => $request->email,
-            'jurusan' => $request->jurusan
-        ];
-
         //menggunakan model student untuk insert data
-        $student = Student::create($input);
+        $student = Student::create($validatedData);
 
         $data = [
             'message' => "student is creates succesfully",
