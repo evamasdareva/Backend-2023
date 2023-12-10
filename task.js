@@ -5,30 +5,16 @@ const showDownload = (result) => {
 };
 
 // Fungsi untuk download file
-const download = () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const result = "windows-10.exe";
-            resolve(result);
+const download = (showDownload) => {
+    return new Promise(function () {
+        setTimeout(function () {
+            showDownload("windows-10.exe");
         }, 3000);
     });
 };
 
-// Consume Promise
-download()
-    .then((result) => {
-        showDownload(result);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
-
 // Menggunakan Async Await
-const mainAsyncAwait = async () => {
-    try {
-        const result = await download();
-        showDownload(result);
-    } catch (error) {
-        console.error("Error:", error);
-    }
+const main = async () => {
+    console.log(await download(showDownload));
 };
+main();
