@@ -1,5 +1,5 @@
 // import express and router
-const express = require('express');
+//const express = require('express');
 const router = require('./routes/api');
 
 // buat object express
