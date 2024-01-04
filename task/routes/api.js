@@ -1,18 +1,23 @@
-// import StudentController
-const StudentController = require('../controllers/StudentController');
+// import Student Controller
+const StudentController = require("../controllers/StudentController");
 
-const express = require('express');
+// import express
+const express = require("express");
+
+// make an object router
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('Welcome to Student API');
+// make home routing
+router.get("/", (req, res) => {
+    res.send("Hello Ziyad");
 });
 
-// student routes
-router.get('/students', StudentController.index);
-router.post('/students', StudentController.store);
-router.put('/students/:id', StudentController.update);
-router.delete('/students/:id', StudentController.destroy);
+// Routing for Students
+router.get("/students", StudentController.index);
+router.post("/students", StudentController.store);
+router.put("/students/:id", StudentController.update);
+router.delete("/students/:id", StudentController.destroy);
+router.get("/students/:id", StudentController.show);
 
-// export router
+// export routing
 module.exports = router;
